@@ -30,39 +30,59 @@
         return;
       }
 
-      function createNode(key, value) {
-        const node = document.createElement('div');
-        node.className = 'node';
+function createNode(key, value) {
+  const node = document.createElement('div');
+  node.className = 'node';
 
-        if (value && typeof value === 'object') {
-          const toggle = document.createElement('span');
-          toggle.className = 'toggle';
-          toggle.textContent = '[+] ' + key;
-          const children = document.createElement('div');
-          children.className = 'children';
+  // valueがオブジェクトまたは配列の場合
+  if (value && typeof value === 'object') {
+    const toggle = document.createElement('span');
+    toggle.className = 'toggle';
 
-          for (const k in value) {
-            children.appendChild(createNode(k, value[k]));
-          }
+    // nameがある場合はkeyの隣に表示
+    let displayKey = key;
+    if (Array.isArray(value)) {
+      displayKey += ` [${value.length}]`; // 配列なら要素数も表示
+    } else if (value.name) {
+      displayKey += ` (${value.name})`;
+    }
 
-          toggle.onclick = () => {
-            if (children.style.display === 'none') {
-              children.style.display = 'block';
-              toggle.textContent = '[-] ' + key;
-            } else {
-              children.style.display = 'none';
-              toggle.textContent = '[+] ' + key;
-            }
-          };
+    toggle.textContent = '[+] ' + displayKey;
 
-          node.appendChild(toggle);
-          node.appendChild(children);
-        } else {
-          node.textContent = key + ': ' + value;
-        }
+    const children = document.createElement('div');
+    children.className = 'children';
 
-        return node;
+    // 配列もオブジェクトも同じように再帰
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        children.appendChild(createNode(`[${index}]`, item));
+      });
+    } else {
+      for (const k in value) {
+        children.appendChild(createNode(k, value[k]));
       }
+    }
+
+    toggle.onclick = () => {
+      if (children.style.display === 'none') {
+        children.style.display = 'block';
+        toggle.textContent = '[-] ' + displayKey;
+      } else {
+        children.style.display = 'none';
+        toggle.textContent = '[+] ' + displayKey;
+      }
+    };
+
+    node.appendChild(toggle);
+    node.appendChild(children);
+
+  } else {
+    // valueがプリミティブの場合
+    node.textContent = key + ': ' + value;
+  }
+
+  return node;
+}
 
       for (const k in obj) {
         output.appendChild(createNode(k, obj[k]));
