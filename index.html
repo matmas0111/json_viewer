@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Viewer with Collapse</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>JSON Viewer（折りたたみ対応）</h1>
+
+    <textarea id="input" placeholder="ここにJSONを貼り付け"></textarea>
+    <button onclick="buildTree()">ツリー表示</button>
+
+    <div id="output" class="tree"></div>
+  </div>
+
+  <script>
+    function buildTree() {
+      const input = document.getElementById("input").value;
+      const output = document.getElementById("output");
+      output.innerHTML = '';
+
+      let obj;
+      try {
+        obj = JSON.parse(input);
+      } catch (e) {
+        output.textContent = "JSONエラー: " + e.message;
+        return;
+      }
+
+      function createNode(key, value) {
+        const node = document.createElement('div');
+        node.className = 'node';
+
+        if (value && typeof value === 'object') {
+          const toggle = document.createElement('span');
+          toggle.className = 'toggle';
+          toggle.textContent = '[+] ' + key;
+          const children = document.createElement('div');
+          children.className = 'children';
+
+          for (const k in value) {
+            children.appendChild(createNode(k, value[k]));
+          }
+
+          toggle.onclick = () => {
+            if (children.style.display === 'none') {
+              children.style.display = 'block';
+              toggle.textContent = '[-] ' + key;
+            } else {
+              children.style.display = 'none';
+              toggle.textContent = '[+] ' + key;
+            }
+          };
+
+          node.appendChild(toggle);
+          node.appendChild(children);
+        } else {
+          node.textContent = key + ': ' + value;
+        }
+
+        return node;
+      }
+
+      for (const k in obj) {
+        output.appendChild(createNode(k, obj[k]));
+      }
+    }
+  </script>
+</body>
+</html>
