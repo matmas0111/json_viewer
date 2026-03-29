@@ -67,3 +67,11 @@ button:hover {
   color: #0078d4;
   user-select: none;
 }
+
+.children {
+  display: none;
+}
+
+.children.open {
+  display: block;
+}

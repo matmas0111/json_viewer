@@ -8,10 +8,10 @@
 </head>
 <body>
   <div class="container">
-    <h1>JSON Viewer（折りたたみ対応）</h1>
+    <h1>JSON Viewer（折りたたみ版）</h1>
 
-    <textarea id="input" placeholder="ここにJSONを貼り付け"></textarea>
-    <button onclick="buildTree()">ツリー表示</button>
+    <textarea id="input" placeholder="ここにJSONを貼り付けてください"></textarea>
+    <button onclick="buildTree()">ツリーを表示</button>
 
     <div id="output" class="tree"></div>
   </div>
@@ -64,18 +64,11 @@ function createNode(key, value) {
     }
 
     toggle.onclick = () => {
-      if (children.style.display === 'none') {
-        children.style.display = 'block';
-        toggle.textContent = '[-] ' + displayKey;
-      } else {
-        children.style.display = 'none';
-        toggle.textContent = '[+] ' + displayKey;
-      }
+        const isOpen = children.classList.toggle('open');
+        toggle.textContent = (isOpen ? '[-] ' : '[+] ') + displayKey; 
     };
-
     node.appendChild(toggle);
     node.appendChild(children);
-
   } else {
     // valueがプリミティブの場合
     node.textContent = key + ': ' + value;
