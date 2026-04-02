@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>JSON Diff Viewer</title>
+  <link rel="stylesheet" href="diff_tool.css">
+</head>
+<body>
+
+<h1>JSON Diff Viewer</h1>
+<p>※ <a href="./index.html">折り畳み付きviewerはこちら</a></p>
+
+<div class="container">
+  <textarea id="input1" placeholder="JSON①"></textarea>
+  <textarea id="input2" placeholder="JSON②"></textarea>
+</div>
+
+<button onclick="compare()">比較する</button>
+
+<div id="output" class="result"></div>
+
+<script>
+function diffJson(a, b, path = '', parentA = null, parentB = null) {
+  let result = []
+
+  const keys = new Set([...Object.keys(a || {}), ...Object.keys(b || {})])
+
+  keys.forEach(key => {
+    const newPath = path ? path + '.' + key : key
+
+    if (typeof a[key] === 'object' && typeof b[key] === 'object') {
+      result = result.concat(diffJson(a[key], b[key], newPath, a[key], b[key]))
+    } else if (a[key] !== b[key]) {
+
+      // name取得ロジック
+      let nameLabel = ''
+      if (parentA && parentA.name) {
+        nameLabel = ` name:${parentA.name}`
+      } else if (parentB && parentB.name) {
+        nameLabel = ` name:${parentB.name}`
+      }
+
+const parent = parentA || parentB
+
+function formatPath(path, parent) {
+  if (!parent || !parent.name) return path
+
+  const parts = path.split('.')
+  const last = parts.pop()
+
+  return parts.join(' ') + ' ' + parent.name + ' ' + last
+}
+
+const formatted = formatPath(newPath, parent)
+
+result.push({
+  label: formatted,
+  before: a[key],
+  after: b[key]
+})
+    }
+  })
+
+  return result
+}
+
+function compare() {
+  const out = document.getElementById("output")
+  out.innerHTML = ''
+
+  let json1, json2
+
+  try {
+    json1 = JSON.parse(document.getElementById("input1").value)
+    json2 = JSON.parse(document.getElementById("input2").value)
+  } catch (e) {
+    out.textContent = "JSONエラー: " + e.message
+    return
+  }
+
+  const diffs = diffJson(json1, json2)
+
+  if (diffs.length === 0) {
+    out.textContent = "差分なし"
+    return
+  }
+
+diffs.forEach(d => {
+  const div = document.createElement('div')
+  div.className = 'diff'
+
+  // ラベル部分
+  const labelSpan = document.createElement('span')
+  labelSpan.className = 'label'
+  labelSpan.textContent = `${d.label}: `
+
+  // 値部分（before → after）
+  const valueSpan = document.createElement('span')
+  valueSpan.className = 'value'
+
+  const beforeSpan = document.createElement('span')
+  beforeSpan.className = 'before'
+  beforeSpan.textContent = d.before
+
+  const arrow = document.createTextNode(' → ')
+
+  const afterSpan = document.createElement('span')
+  afterSpan.className = 'after'
+  afterSpan.textContent = d.after
+
+  valueSpan.appendChild(beforeSpan)
+  valueSpan.appendChild(arrow)
+  valueSpan.appendChild(afterSpan)
+
+  div.appendChild(labelSpan)
+  div.appendChild(valueSpan)
+
+  out.appendChild(div)
+})
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+body { 
+  font-family: sans-serif; 
+  background-color: #f7f7f7;
+  padding: 40px;
+}
+
+textarea { 
+  width: 45%; 
+  height: 300px; 
+  flex: 1;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+p {
+  text-align: center;
+}
+
+.container { 
+  display: flex; 
+  gap: 10px;
+  width: 90%;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.result {
+    margin-top: 20px; 
+  }
+
+button {
+    display: block;
+  width: 90%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 25px auto;
+}
+
+.diff { 
+  color: red; 
+}
+
+.label {
+  color: #000;
+}
+
+.before {
+  color: rgb(164, 138, 72);
+}
+
+.after {
+  color: rgb(127, 115, 186);
+}
