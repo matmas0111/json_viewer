@@ -8,7 +8,7 @@ JSONデータを扱うためのシンプルなWebツール集です。
 
 ### 1. JSON Viewer（index.html）
 
-[text](https://matmas0111.github.io/json_viewer/index.html)
+[index.htmlを開く](https://matmas0111.github.io/json_viewer/index.html)
 
 JSONデータをツリー構造で表示します。
 
@@ -27,7 +27,7 @@ JSONデータをツリー構造で表示します。
 
 ### 2. JSON Diff Viewer（diff_tool.html）
 
-[text](https://matmas0111.github.io/json_viewer/diff_tool.html)
+[diff_tool.htmlを開く](https://matmas0111.github.io/json_viewer/diff_tool.html)
 
 2つのJSONを比較し、差分を表示します。
 

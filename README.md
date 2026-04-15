@@ -8,7 +8,7 @@ A simple set of web tools for working with JSON data.
 
 ### 1. JSON Viewer (index.html)
 
-[text](https://matmas0111.github.io/json_viewer/index.html)
+[Open index.html](https://matmas0111.github.io/json_viewer/index.html)
 
 Displays JSON data in a tree structure.
 
@@ -27,7 +27,7 @@ Displays JSON data in a tree structure.
 
 ### 2. JSON Diff Viewer (diff_tool.html)
 
-[text](https://matmas0111.github.io/json_viewer/diff_tool.html)
+[Open diff_tool.html](https://matmas0111.github.io/json_viewer/diff_tool.html)
 
 Compares two JSON objects and highlights differences.
 
